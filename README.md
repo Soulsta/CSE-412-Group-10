@@ -47,7 +47,8 @@ psql -U postgres -d ticketingDB -f ticketingDB.sql
 > ```
 > **Note:** If your database has a different name than `ticketingDB`, replace it with your database name in all commands and in your `.env` file.
 
-# Now that the DataBase is setup we can now import the csv files into the DB. To do this you will want to open up PgAdmin and import each file to the corresponding table. Ensure that the delimiter is set to a comma and header toggle is set to True.
+**Importing into Database**:
+Now that the DataBase is setup we can now import the csv files into the DB. To do this you will want to open up PgAdmin and import each file to the corresponding table. Ensure that the delimiter is set to a comma and header toggle is set to True.
 
 ### 3. Configure Environment Variables
 A template is provided at `backend/.env.example`. Copy it to `.env` and fill in your credentials:
