@@ -148,3 +148,30 @@ app.delete('/api/admin/students/:asurite', async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//this is how we get the events from our database so taht we can use them in the frontend
+app.get('/events', async (req, res) => {
+  try {
+    //below is where we execute our SQL query which retrieves the events and their attributes
+    //Note that some attributes are not there as students should not be able to see every attribute
+    const result = await pool.query(`
+      SELECT 
+        eventid,
+        eventlocation,
+        eventtime,
+        releasestart,
+        releaseend,
+        maxticketsperstudent,
+        status,
+        categorytype
+      FROM events
+      ORDER BY eventtime ASC
+    `);
+    //then we send our response as json
+    res.json(result.rows);
+  }
+  //if there are any errors then we display it
+  catch (err) {
+    console.error('Error fetching events:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
