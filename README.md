@@ -39,13 +39,15 @@ cd CSE-412-Group-10
 ### 2. Set Up the Database
 Open a terminal and run:
 ```bash
-psql -U postgres -d ticketingDB -f database/schema.sql
+psql -U postgres -d ticketingDB -f ticketingDB.sql
 ```
 > If the database `ticketingDB` does not exist yet, create it first:
 > ```bash
 > psql -U postgres -c "CREATE DATABASE \"ticketingDB\";"
 > ```
 > **Note:** If your database has a different name than `ticketingDB`, replace it with your database name in all commands and in your `.env` file.
+
+# Now that the DataBase is setup we can now import the csv files into the DB. To do this you will want to open up PgAdmin and import each file to the corresponding table. Ensure that the delimiter is set to a comma and header toggle is set to True.
 
 ### 3. Configure Environment Variables
 A template is provided at `backend/.env.example`. Copy it to `.env` and fill in your credentials:
@@ -100,18 +102,16 @@ Then open your browser and go to: `http://localhost:5173`
 ## Test Accounts
 
 **Student:**
-- Email: `ababel1@asu.edu`
-- Password: `123454321`
+Any of the student accounts in the students.csv file will work to log in. Please feel free to use any of them or create your own account.
+For convenience, I have also provided a student account below.
+Email: 'rehender@asu.edu'
+Password: 'LnA7dvLE'
 
 **Admin:**
-- Email: `admin@asu.edu`
-- Password: `admin123`
-
-> **Note:** The admin account must be inserted manually. Connect to your database and run:
-> ```sql
-> INSERT INTO athleticadministrator(staffId, staffEmail, staffPassword, staffRole)
-> VALUES(1, 'admin@asu.edu', 'admin123', 'Manager');
-> ```
+You cannot create your own admin account; any of the admin accounts in the athleticadministrator.csv will work.
+For convenience, I have also provided an admin account below.
+Email: 'admin.david.cooper@asu.edu'
+Password: 'kvGzUgVVnl'
 
 ---
 
