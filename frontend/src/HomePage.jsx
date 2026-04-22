@@ -6,6 +6,8 @@ export default function HomePage() {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [events, setEvents] = useState([]);
+  const [tickets, setTickets] = useState([]);
+  const [sortDir, setSortDir] = useState('asc');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -13,40 +15,87 @@ export default function HomePage() {
     localStorage.removeItem('user');
     navigate('/');
   };
-  //first we need to grab all of our categories so that we can split them up so its easier for the viewer to see
-  //We also give them option to view All of the events at once
+
   const categories = ['All', ...new Set(events.map((event) => event.categorytype))];
 
-  //here we are just filtering based on selected category
   const filteredEvents =
-  //show all events
     selectedCategory === 'All'
       ? events
-      //otherwise show the selected event 
       : events.filter((event) => event.categorytype === selectedCategory);
-  //This is where we get the events - from our backend database
+
+  const fetchEvents = async (dir = sortDir) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/events?sort=${dir}`);
+      if (!response.ok) {
+        throw new Error('Failed to grab the events');
+      }
+      const data = await response.json();
+      setEvents(data);
+    } catch (err) {
+      setError('Error getting events');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTickets = async () => {
+    if (!user.asurite) return;
+    try {
+      const response = await fetch(`http://localhost:3001/api/tickets/${user.asurite}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      setTickets(data);
+    } catch (err) {
+      // ignore
+    }
+  };
+
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        //here is our request to backend for the events
-        const response = await fetch('http://localhost:3001/events');
-        //did not work so throw error
-        if (!response.ok) {
-          throw new Error('Failed to grab the events');
-        }
-        const data = await response.json();
-        //here is where we store the events from our backend
-        setEvents(data);
-      }
-      catch (err) {
-        setError('Error getting events');
-      }
-      finally {
-        setLoading(false);
-      }
-    };
-    fetchEvents();
+    fetchEvents(sortDir);
+    fetchTickets();
   }, []);
+
+  const toggleSort = async () => {
+    const next = sortDir === 'asc' ? 'desc' : 'asc';
+    setSortDir(next);
+    await fetchEvents(next);
+  };
+
+  const handleClaim = async (eventId) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/tickets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ eventId, asurite: user.asurite }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        alert(data.message || 'Failed to claim ticket.');
+        return;
+      }
+      await fetchEvents(sortDir);
+      await fetchTickets();
+    } catch (err) {
+      alert('Failed to claim ticket.');
+    }
+  };
+
+  const handleReturn = async (ticketId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/tickets/${ticketId}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        alert(data.message || 'Failed to return ticket.');
+        return;
+      }
+      await fetchEvents(sortDir);
+      await fetchTickets();
+    } catch (err) {
+      alert('Failed to return ticket.');
+    }
+  };
 
   return (
     <div
@@ -135,6 +184,22 @@ export default function HomePage() {
             <p>No events found check to ensure DB imported</p>
           )}
           <div style={{ marginBottom: '1rem' }}>
+            <button
+              onClick={toggleSort}
+              style={{
+                padding: '0.6rem 1rem',
+                background: '#8C1D40',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '1rem',
+                cursor: 'pointer',
+              }}
+            >
+              Sort by Time: {sortDir === 'asc' ? 'Ascending' : 'Descending'}
+            </button>
+          </div>
+          <div style={{ marginBottom: '1rem' }}>
             <label
               htmlFor="categoryFilter"
               style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#374151' }}
@@ -194,6 +259,92 @@ export default function HomePage() {
                   <p style={{ margin: '0.25rem 0' }}>
                     <strong>Max Tickets Per Student:</strong> {event.maxticketsperstudent}
                   </p>
+
+                  <p style={{ margin: '0.25rem 0' }}>
+                    <strong>Tickets Remaining:</strong> {event.ticketsremaining} / {event.capacity}
+                  </p>
+
+                  {Number(event.ticketsremaining) === 0 && (
+                    <p style={{ margin: '0.25rem 0', color: 'red', fontWeight: 'bold' }}>
+                      Sold Out
+                    </p>
+                  )}
+
+                  {event.status === 'Scheduled' && Number(event.ticketsremaining) > 0 && (
+                    <button
+                      onClick={() => handleClaim(event.eventid)}
+                      style={{
+                        marginTop: '0.5rem',
+                        padding: '0.5rem 1rem',
+                        background: '#8C1D40',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        fontSize: '0.95rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Claim Ticket
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div
+          style={{
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '1.5rem',
+          }}
+        >
+          <h3 style={{ marginTop: 0, color: '#8C1D40' }}>My Tickets</h3>
+          {tickets.length === 0 ? (
+            <p>You haven't claimed any tickets yet.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {tickets.map((ticket) => (
+                <div
+                  key={ticket.ticketid}
+                  style={{
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    padding: '1rem',
+                    backgroundColor: '#f9fafb',
+                  }}
+                >
+                  <h4 style={{ margin: '0.25rem 0' }}>{ticket.categorytype}</h4>
+
+                  <p style={{ margin: '0.25rem 0' }}>
+                    <strong>Location:</strong> {ticket.eventlocation}
+                  </p>
+
+                  <p style={{ margin: '0.25rem 0' }}>
+                    <strong>Time:</strong>{' '}
+                    {new Date(ticket.eventtime).toLocaleString()}
+                  </p>
+
+                  <p style={{ margin: '0.25rem 0' }}>
+                    <strong>Status:</strong> {ticket.status}
+                  </p>
+
+                  <button
+                    onClick={() => handleReturn(ticket.ticketid)}
+                    style={{
+                      marginTop: '0.5rem',
+                      padding: '0.5rem 1rem',
+                      background: '#8C1D40',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '4px',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Return Ticket
+                  </button>
                 </div>
               ))}
             </div>
