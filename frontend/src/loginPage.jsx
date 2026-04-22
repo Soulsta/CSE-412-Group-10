@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import asuLogo from './asu-logo.png';
 
 function LoginForm({ title, apiEndpoint }) {
   const [email, setEmail] = useState('');
@@ -36,18 +37,18 @@ function LoginForm({ title, apiEndpoint }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '320px', gap: '0.5rem', padding: '2rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
-      <h2 style={{ margin: '0 0 1rem', color: '#8C1D40', fontSize: '1.8rem', textAlign: 'center' }}>{title}</h2>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '320px', gap: '0.5rem', padding: '2rem', border: '1px solid #FFC627', borderRadius: '8px', background: 'rgba(255,255,255,0.08)' }}>
+      <h2 style={{ margin: '0 0 1rem', color: '#FFC627', fontSize: '1.8rem', textAlign: 'center' }}>{title}</h2>
 
-      {error && <p style={{ color: '#dc2626', fontSize: '0.875rem', margin: 0 }}>{error}</p>}
+      {error && <p style={{ color: '#FFC627', fontSize: '0.875rem', margin: 0 }}>{error}</p>}
 
-      <label>Email</label>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', fontSize: '1rem' }} />
+      <label style={{ color: '#fff' }}>Email</label>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" style={{ padding: '0.5rem', border: '1px solid #FFC627', borderRadius: '4px', fontSize: '1rem', background: 'rgba(255,255,255,0.15)', color: '#fff' }} />
 
-      <label>Password</label>
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', fontSize: '1rem' }} />
+      <label style={{ color: '#fff' }}>Password</label>
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" style={{ padding: '0.5rem', border: '1px solid #FFC627', borderRadius: '4px', fontSize: '1rem', background: 'rgba(255,255,255,0.15)', color: '#fff' }} />
 
-      <button type="submit" disabled={loading} style={{ marginTop: '0.5rem', padding: '0.6rem', background: '#8C1D40', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer' }}>
+      <button type="submit" disabled={loading} style={{ marginTop: '0.5rem', padding: '0.6rem', background: '#FFC627', color: '#8C1D40', border: 'none', borderRadius: '4px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
         {loading ? 'Signing in...' : 'Sign In'}
       </button>
     </form>
@@ -95,25 +96,25 @@ function RegisterForm({ onClose }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '320px', gap: '0.5rem', padding: '2rem', border: '2px solid #8C1D40', borderRadius: '8px', marginTop: '1rem' }}>
-      <h2 style={{ margin: '0 0 1rem', color: '#8C1D40', fontSize: '1.8rem', textAlign: 'center' }}>Create Account</h2>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '320px', gap: '0.5rem', padding: '2rem', border: '2px solid #FFC627', borderRadius: '8px', background: 'rgba(255,255,255,0.08)' }}>
+      <h2 style={{ margin: '0 0 1rem', color: '#FFC627', fontSize: '1.8rem', textAlign: 'center' }}>Create Account</h2>
 
-      {error && <p style={{ color: '#dc2626', fontSize: '0.875rem', margin: 0 }}>{error}</p>}
+      {error && <p style={{ color: '#ffaaaa', fontSize: '0.875rem', margin: 0 }}>{error}</p>}
 
-      <label>Email</label>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', fontSize: '1rem' }} />
+      <label style={{ color: '#fff' }}>Email</label>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" style={{ padding: '0.5rem', border: '1px solid #FFC627', borderRadius: '4px', fontSize: '1rem', background: 'rgba(255,255,255,0.15)', color: '#fff' }} />
 
-      <label>Password</label>
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', fontSize: '1rem' }} />
+      <label style={{ color: '#fff' }}>Password</label>
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" style={{ padding: '0.5rem', border: '1px solid #FFC627', borderRadius: '4px', fontSize: '1rem', background: 'rgba(255,255,255,0.15)', color: '#fff' }} />
 
-      <label>Confirm Password</label>
-      <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required placeholder="••••••••" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', fontSize: '1rem' }} />
+      <label style={{ color: '#fff' }}>Confirm Password</label>
+      <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required placeholder="••••••••" style={{ padding: '0.5rem', border: '1px solid #FFC627', borderRadius: '4px', fontSize: '1rem', background: 'rgba(255,255,255,0.15)', color: '#fff' }} />
 
-      <button type="submit" disabled={loading} style={{ marginTop: '0.5rem', padding: '0.6rem', background: '#8C1D40', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer' }}>
+      <button type="submit" disabled={loading} style={{ marginTop: '0.5rem', padding: '0.6rem', background: '#FFC627', color: '#8C1D40', border: 'none', borderRadius: '4px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
         {loading ? 'Creating...' : 'Create Account'}
       </button>
 
-      <button type="button" onClick={onClose} style={{ padding: '0.6rem', background: '#fff', color: '#8C1D40', border: '1px solid #8C1D40', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer' }}>
+      <button type="button" onClick={onClose} style={{ padding: '0.6rem', background: 'transparent', color: '#FFC627', border: '1px solid #FFC627', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer' }}>
         Cancel
       </button>
     </form>
@@ -124,21 +125,28 @@ export default function LoginPage() {
   const [showRegister, setShowRegister] = useState(false);
 
   return (
-    <div style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#fff', fontFamily: 'sans-serif', gap: '1.5rem' }}>
-      <h1 style={{ color: '#8C1D40', fontSize: '3rem', fontWeight: 'bold', margin: 0, textAlign: 'center' }}>Welcome!</h1>
+    <div style={{ position: 'relative', minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#8C1D40', fontFamily: 'sans-serif', gap: '1.5rem', padding: '2rem', overflow: 'hidden' }}>
 
-      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-        <LoginForm title="Sign In as Student" apiEndpoint="http://localhost:3001/api/login" />
-        <LoginForm title="Sign In as Admin" apiEndpoint="http://localhost:3001/api/admin/login" />
+      {/* Background logo */}
+      <img src={asuLogo} alt="" style={{ position: 'absolute', width: '30%', opacity: 0.15, zIndex: 0, pointerEvents: 'none', filter: 'blur(2px)' }} />
+
+      {/* Foreground content */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem', width: '100%' }}>
+        <h1 style={{ color: '#FFC627', fontSize: '3rem', fontWeight: 'bold', margin: 0, textAlign: 'center' }}>Welcome!</h1>
+
+        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <LoginForm title="Sign In as Student" apiEndpoint="http://localhost:3001/api/login" />
+          <LoginForm title="Sign In as Admin" apiEndpoint="http://localhost:3001/api/admin/login" />
+        </div>
+
+        {!showRegister && (
+          <button onClick={() => setShowRegister(true)} style={{ padding: '0.6rem 2rem', background: 'transparent', color: '#FFC627', border: '2px solid #FFC627', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer' }}>
+            Create an Account
+          </button>
+        )}
+
+        {showRegister && <RegisterForm onClose={() => setShowRegister(false)} />}
       </div>
-
-      {!showRegister && (
-        <button onClick={() => setShowRegister(true)} style={{ padding: '0.6rem 2rem', background: '#fff', color: '#8C1D40', border: '2px solid #8C1D40', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer' }}>
-          Create an Account
-        </button>
-      )}
-
-      {showRegister && <RegisterForm onClose={() => setShowRegister(false)} />}
     </div>
   );
 }
