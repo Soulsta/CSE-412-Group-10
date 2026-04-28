@@ -14,6 +14,7 @@ function LoginForm({ title, apiEndpoint }) {
     setError('');
     setLoading(true);
 
+    //Web request here
     try {
       const res = await fetch(apiEndpoint, {
         method: 'POST',
@@ -36,6 +37,7 @@ function LoginForm({ title, apiEndpoint }) {
     }
   };
 
+  //Textfield and button creation for existing user Login Page
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '320px', gap: '0.5rem', padding: '2rem', border: '1px solid #FFC627', borderRadius: '8px', background: 'rgba(255,255,255,0.08)' }}>
       <h2 style={{ margin: '0 0 1rem', color: '#FFC627', fontSize: '1.8rem', textAlign: 'center' }}>{title}</h2>
@@ -55,6 +57,7 @@ function LoginForm({ title, apiEndpoint }) {
   );
 }
 
+//Register Page creation here
 function RegisterForm({ onClose }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -95,6 +98,7 @@ function RegisterForm({ onClose }) {
     }
   };
 
+  //Textfield and button creation for Register Page
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '320px', gap: '0.5rem', padding: '2rem', border: '2px solid #FFC627', borderRadius: '8px', background: 'rgba(255,255,255,0.08)' }}>
       <h2 style={{ margin: '0 0 1rem', color: '#FFC627', fontSize: '1.8rem', textAlign: 'center' }}>Create Account</h2>
@@ -121,6 +125,8 @@ function RegisterForm({ onClose }) {
   );
 }
 
+//These are images that will always be displayed
+//whether the user is directed to the Register (new user) or Login (existing user)
 export default function LoginPage() {
   const [showRegister, setShowRegister] = useState(false);
 
