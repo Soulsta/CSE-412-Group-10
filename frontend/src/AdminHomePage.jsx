@@ -8,6 +8,7 @@ export default function AdminHomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  //Skeleton to create Events
   const emptyEventForm = {
     eventLocation: '',
     eventTime: '',
@@ -31,6 +32,7 @@ export default function AdminHomePage() {
     fetchEvents();
   }, []);
 
+  //Loading in Students data
   const fetchStudents = async () => {
     setLoading(true);
     setError('');
@@ -49,6 +51,7 @@ export default function AdminHomePage() {
     }
   };
 
+  //JS for handling delete button action
   const handleDelete = async (asurite) => {
     if (!confirm(`Delete student "${asurite}"?`)) return;
 
@@ -67,6 +70,7 @@ export default function AdminHomePage() {
     }
   };
 
+  //SQL has a date/time type, but JS does not so we must convert it
   const toLocalDatetime = (s) => {
     if (!s) return '';
     const d = new Date(s);
@@ -74,6 +78,7 @@ export default function AdminHomePage() {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   };
 
+  //Loading in Events data
   const fetchEvents = async () => {
     try {
       const res = await fetch('http://localhost:3001/api/events');
@@ -92,6 +97,7 @@ export default function AdminHomePage() {
     setEventForm({ ...eventForm, [field]: value });
   };
 
+  //Commits a new Event into the database
   const handleEventSubmit = async (e) => {
     e.preventDefault();
     setEventError('');
@@ -207,6 +213,7 @@ export default function AdminHomePage() {
     navigate('/');
   };
 
+ {/*UI of standard admin page*/}
   return (
     <div style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff', fontFamily: 'sans-serif', padding: '2rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '900px', gap: '1rem' }}>
@@ -259,6 +266,7 @@ export default function AdminHomePage() {
           )}
         </div>
 
+        {/*UI handling Event filtering by attributes*/}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '2rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
           <h3 style={{ margin: 0, color: '#8C1D40', fontSize: '1.4rem' }}>Event Management</h3>
 
@@ -371,6 +379,7 @@ export default function AdminHomePage() {
             </div>
           </form>
 
+          {/*UI handling Event editing and cancellation*/}
           {events.length === 0 ? (
             <p style={{ color: '#6b7280', fontSize: '0.875rem', margin: 0 }}>No events found.</p>
           ) : (
