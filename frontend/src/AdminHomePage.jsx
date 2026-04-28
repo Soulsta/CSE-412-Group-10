@@ -213,7 +213,7 @@ export default function AdminHomePage() {
     navigate('/');
   };
 
- {/*UI of standard admin page*/}
+ //UI of standard admin page
   return (
     <div style={{ minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff', fontFamily: 'sans-serif', padding: '2rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '900px', gap: '1rem' }}>
