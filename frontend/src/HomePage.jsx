@@ -102,8 +102,8 @@ export default function HomePage() {
     }
   };
 
+  //UI portion of Logout button handler
   return (
-    {/*UI portion of Logout button handler*/}
     <div
       style={{minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff',
         fontFamily: 'sans-serif', padding: '2rem', boxSizing: 'border-box',}}
