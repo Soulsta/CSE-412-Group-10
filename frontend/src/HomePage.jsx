@@ -11,6 +11,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  //Logout button removes user from local storage and redirects to login
   const handleLogout = () => {
     localStorage.removeItem('user');
     navigate('/');
@@ -23,6 +24,7 @@ export default function HomePage() {
       ? events
       : events.filter((event) => event.categorytype === selectedCategory);
 
+  //Importing Events data
   const fetchEvents = async (dir = sortDir) => {
     try {
       const response = await fetch(`http://localhost:3001/api/events?sort=${dir}`);
@@ -38,6 +40,7 @@ export default function HomePage() {
     }
   };
 
+  //Importing tickets data
   const fetchTickets = async () => {
     if (!user.asurite) return;
     try {
@@ -61,6 +64,7 @@ export default function HomePage() {
     await fetchEvents(next);
   };
 
+  //Ticket claiming handler
   const handleClaim = async (eventId) => {
     try {
       const response = await fetch('http://localhost:3001/api/tickets', {
@@ -80,6 +84,7 @@ export default function HomePage() {
     }
   };
 
+  //Ticket cancellation handler
   const handleReturn = async (ticketId) => {
     try {
       const response = await fetch(`http://localhost:3001/api/tickets/${ticketId}`, {
@@ -98,46 +103,20 @@ export default function HomePage() {
   };
 
   return (
+    {/*UI portion of Logout button handler*/}
     <div
-      style={{
-        minHeight: '100vh',
-        width: '100vw',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: '#fff',
-        fontFamily: 'sans-serif',
-        padding: '2rem',
-        boxSizing: 'border-box',
-      }}
+      style={{minHeight: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff',
+        fontFamily: 'sans-serif', padding: '2rem', boxSizing: 'border-box',}}
     >
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          maxWidth: '900px',
-          gap: '1rem',
-        }}
+        style={{display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '900px',gap: '1rem',}}
       >
         <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.75rem',
-            padding: '2rem',
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            alignItems: 'center',
-          }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '2rem', border: '1px solid #e5e7eb',
+            borderRadius: '8px',alignItems: 'center',}}
         >
           <h2
-            style={{
-              margin: 0,
-              color: '#8C1D40',
-              fontSize: '1.8rem',
-              textAlign: 'center',
-            }}
+            style={{margin: 0, color: '#8C1D40', fontSize: '1.8rem', textAlign: 'center',}}
           >
             Welcome, {user.asurite || user.staffId || 'User'}!
           </h2>
@@ -154,29 +133,16 @@ export default function HomePage() {
 
           <button
             onClick={handleLogout}
-            style={{
-              marginTop: '0.5rem',
-              width: '100%',
-              maxWidth: '220px',
-              padding: '0.6rem',
-              background: '#8C1D40',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '4px',
-              fontSize: '1rem',
-              cursor: 'pointer',
-            }}
+            style={{marginTop: '0.5rem', width: '100%', maxWidth: '220px', padding: '0.6rem', background: '#8C1D40', color: '#fff',
+              border: 'none', borderRadius: '4px', fontSize: '1rem', cursor: 'pointer',}}
           >
             Logout
           </button>
         </div>
 
+        {/*Event Storting handler*/}
         <div
-          style={{
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            padding: '1.5rem',
-          }}
+          style={{border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem',}}
         >
           <h3 style={{ marginTop: 0, color: '#8C1D40' }}>Available Events</h3>
           {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -186,15 +152,8 @@ export default function HomePage() {
           <div style={{ marginBottom: '1rem' }}>
             <button
               onClick={toggleSort}
-              style={{
-                padding: '0.6rem 1rem',
-                background: '#8C1D40',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                fontSize: '1rem',
-                cursor: 'pointer',
-              }}
+              style={{padding: '0.6rem 1rem', background: '#8C1D40', color: '#fff', border: 'none',
+                borderRadius: '4px', fontSize: '1rem', cursor: 'pointer',}}
             >
               Sort by Time: {sortDir === 'asc' ? 'Ascending' : 'Descending'}
             </button>
@@ -211,13 +170,7 @@ export default function HomePage() {
               id="categoryFilter"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              style={{
-                padding: '0.6rem',
-                borderRadius: '4px',
-                border: '1px solid #d1d5db',
-                fontSize: '1rem',
-                width: '220px',
-              }}
+              style={{padding: '0.6rem', borderRadius: '4px', border: '1px solid #d1d5db', fontSize: '1rem', width: '220px',}}
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
@@ -227,22 +180,18 @@ export default function HomePage() {
             </select>
           </div>
 
+          {/*UI for Ticket claim handler*/}
           {!loading && !error && events.length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {filteredEvents.map((event) => (
                 <div
                   key={event.eventid}
-                  style={{
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    padding: '1rem',
-                    backgroundColor: '#f9fafb',
-                  }}
+                  style={{border: '1px solid #d1d5db', borderRadius: '6px', padding: '1rem', backgroundColor: '#f9fafb',}}
                 >
                   <h4 style={{ margin: '0.25rem 0' }}>
                     <strong></strong> {event.categorytype}
                   </h4>
-
+                  
                   <p style={{ margin: '0.25rem 0' }}>
                     <strong>Location:</strong> {event.eventlocation}
                   </p>
@@ -273,16 +222,8 @@ export default function HomePage() {
                   {event.status === 'Scheduled' && Number(event.ticketsremaining) > 0 && (
                     <button
                       onClick={() => handleClaim(event.eventid)}
-                      style={{
-                        marginTop: '0.5rem',
-                        padding: '0.5rem 1rem',
-                        background: '#8C1D40',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        fontSize: '0.95rem',
-                        cursor: 'pointer',
-                      }}
+                      style={{marginTop: '0.5rem', padding: '0.5rem 1rem', background: '#8C1D40', color: '#fff',
+                        border: 'none', borderRadius: '4px', fontSize: '0.95rem', cursor: 'pointer',}}
                     >
                       Claim Ticket
                     </button>
@@ -293,12 +234,9 @@ export default function HomePage() {
           )}
         </div>
 
+        {/*Handles UI portion of ticket return*/}
         <div
-          style={{
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            padding: '1.5rem',
-          }}
+          style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem',}}
         >
           <h3 style={{ marginTop: 0, color: '#8C1D40' }}>My Tickets</h3>
           {tickets.length === 0 ? (
@@ -308,12 +246,7 @@ export default function HomePage() {
               {tickets.map((ticket) => (
                 <div
                   key={ticket.ticketid}
-                  style={{
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    padding: '1rem',
-                    backgroundColor: '#f9fafb',
-                  }}
+                  style={{ border: '1px solid #d1d5db', borderRadius: '6px', padding: '1rem', backgroundColor: '#f9fafb',}}
                 >
                   <h4 style={{ margin: '0.25rem 0' }}>{ticket.categorytype}</h4>
 
@@ -332,16 +265,8 @@ export default function HomePage() {
 
                   <button
                     onClick={() => handleReturn(ticket.ticketid)}
-                    style={{
-                      marginTop: '0.5rem',
-                      padding: '0.5rem 1rem',
-                      background: '#8C1D40',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '4px',
-                      fontSize: '0.95rem',
-                      cursor: 'pointer',
-                    }}
+                    style={{ marginTop: '0.5rem', padding: '0.5rem 1rem', background: '#8C1D40', color: '#fff',
+                      border: 'none', borderRadius: '4px', fontSize: '0.95rem', cursor: 'pointer',}}
                   >
                     Return Ticket
                   </button>
